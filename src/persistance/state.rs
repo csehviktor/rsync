@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::*;
 
-pub const STATE_FILE: &str = ".state.toml";
+const STATE_FILE: &str = ".state.toml";
 
 #[derive(Default, Serialize, Deserialize)]
 pub struct State {
