@@ -1,4 +1,4 @@
-use std::{fs, path::Path};
+use std::path::Path;
 
 use serde::{Deserialize, Serialize};
 
@@ -49,7 +49,7 @@ impl Config {
             )));
         }
 
-        let raw = fs::read_to_string(path)
+        let raw = std::fs::read_to_string(path)
             .map_err(|err| Error::Persistance(format!("cannot read {CONFIG_FILE}: {err}")))?;
 
         let config: Config = toml::from_str(&raw)

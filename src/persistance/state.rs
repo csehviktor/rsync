@@ -1,4 +1,4 @@
-use std::{collections::BTreeMap, fs, path::Path};
+use std::{collections::BTreeMap, path::Path};
 
 use serde::{Deserialize, Serialize};
 
@@ -19,7 +19,7 @@ impl State {
             return Ok(Self::default());
         }
 
-        let raw = fs::read_to_string(path)
+        let raw = std::fs::read_to_string(path)
             .map_err(|err| Error::Persistance(format!("cannot read {STATE_FILE}: {err}")))?;
 
         toml::from_str(&raw)
@@ -38,7 +38,7 @@ impl State {
         let body = toml::to_string_pretty(self)
             .map_err(|err| Error::Persistance(format!("cannot serialize {STATE_FILE}: {err}")))?;
 
-        fs::write(STATE_FILE, body)
+        std::fs::write(STATE_FILE, body)
             .map_err(|err| Error::Persistance(format!("cannot write {STATE_FILE}: {err}")))?;
 
         Ok(())
