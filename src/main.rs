@@ -5,6 +5,7 @@ use crate::cli::*;
 pub mod cli;
 pub mod error;
 pub mod persistance;
+pub mod walk;
 
 fn main() {
     let cli = Cli::parse();
