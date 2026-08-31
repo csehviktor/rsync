@@ -2,7 +2,7 @@ use std::{collections::BTreeMap, fs, path::Path};
 
 use serde::{Deserialize, Serialize};
 
-use crate::error::{Error, RsyncResult};
+use crate::error::*;
 
 pub const STATE_FILE: &str = ".state.toml";
 
