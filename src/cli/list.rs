@@ -1,3 +1,6 @@
-pub fn run() {
-    println!("list")
+use crate::error::RsyncResult;
+
+pub fn run() -> RsyncResult<()> {
+    println!("list");
+    todo!()
 }
