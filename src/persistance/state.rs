@@ -30,7 +30,7 @@ impl State {
         self.files.get(key).is_some_and(|value| value == hash)
     }
 
-    pub fn record(&mut self, key: String, hash: String) {
+    pub fn push(&mut self, key: String, hash: String) {
         self.files.insert(key, hash);
     }
 
@@ -52,7 +52,7 @@ mod tests {
     #[test]
     fn toml() {
         let mut state = State::default();
-        state.record("images/abc.png".into(), "123456".into());
+        state.push("images/abc.png".into(), "123456".into());
 
         let raw = toml::to_string_pretty(&state).unwrap();
         let restored: State = toml::from_str(&raw).unwrap();
