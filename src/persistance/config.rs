@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::*;
 
-const CONFIG_FILE: &str = ".config.toml";
+pub const CONFIG_FILE: &str = ".config.toml";
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {
