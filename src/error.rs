@@ -4,6 +4,9 @@ pub type RsyncResult<T> = Result<T, Error>;
 
 #[derive(Debug, Error)]
 pub enum Error {
+    #[error("r2 error: {0}")]
+    R2(String),
+
     #[error("{0}")]
     Persistance(String),
 
@@ -11,8 +14,8 @@ pub enum Error {
     Io(#[from] std::io::Error),
 
     #[error(transparent)]
-    Http(#[from] reqwest::Error),
+    Xml(#[from] serde_xml_rs::Error),
 
-    #[error("r2 authentication error: {message}")]
-    R2 { status: u16, message: String },
+    #[error(transparent)]
+    Http(#[from] reqwest::Error),
 }
