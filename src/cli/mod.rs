@@ -14,7 +14,11 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Command {
-    Initialize { bucket: Option<String> },
+    #[command(alias = "init")]
+    Initialize {
+        bucket: Option<String>,
+    },
+    #[command(alias = "ls")]
     List,
     Pull,
     Push,
