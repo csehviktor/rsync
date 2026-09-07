@@ -14,7 +14,7 @@ fn main() -> ExitCode {
     let cli = Cli::parse();
 
     let result = match cli.command {
-        Command::Initialize { bucket } => initialize::run(&bucket),
+        Command::Initialize { bucket } => initialize::run(bucket),
         Command::List => list::run(),
         Command::Pull => pull::run(),
         Command::Push => push::run(),

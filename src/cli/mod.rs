@@ -14,7 +14,7 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Command {
-    Initialize { bucket: String },
+    Initialize { bucket: Option<String> },
     List,
     Pull,
     Push,

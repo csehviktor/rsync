@@ -25,7 +25,7 @@ pub struct Settings {
 }
 
 impl Config {
-    pub fn default(bucket: &str) -> String {
+    pub fn default(bucket: Option<String>) -> String {
         let config = Self {
             credentials: Credentials {
                 account_id: "<your-cloudflare-account-id>".into(),
@@ -33,7 +33,7 @@ impl Config {
                 secret_access_key: "<your-r2-secret-access-key>".into(),
             },
             settings: Settings {
-                bucket: bucket.into(),
+                bucket: bucket.unwrap_or("<your-bucket>".into()),
             },
         };
 
@@ -107,10 +107,9 @@ mod tests {
 
     #[test]
     fn invalid_config() {
-        let config_raw = Config::default("bucket");
+        let config_raw = Config::default(None);
         let config: Config = toml::from_str(&config_raw).unwrap();
 
-        assert_eq!(config.settings.bucket, "bucket");
         assert!(config.validate().is_err())
     }
 }
