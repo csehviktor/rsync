@@ -58,7 +58,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn toml() {
+    fn push() {
         let mut state = State::default();
         state.push("images/abc.png".into(), "123456".into());
 
@@ -68,5 +68,24 @@ mod tests {
         assert!(restored.is_pushed("images/abc.png", "123456"));
         assert!(!restored.is_pushed("images/abc.png", "000000"));
         assert!(!restored.is_pushed("images/other.png", "123456"));
+    }
+
+    #[test]
+    fn remove() {
+        let mut state = State::default();
+        state.push("images/abc.png".into(), "123456".into());
+        state.push("images/other.png".into(), "123456".into());
+
+        let raw = toml::to_string_pretty(&state).unwrap();
+        let restored: State = toml::from_str(&raw).unwrap();
+
+        assert!(restored.is_pushed("images/abc.png", "123456"));
+
+        state.remove("images/abc.png");
+        let raw = toml::to_string_pretty(&state).unwrap();
+        let restored: State = toml::from_str(&raw).unwrap();
+
+        assert!(!restored.is_pushed("images/abc.png", "123456"));
+        assert!(restored.is_pushed("images/other.png", "123456"));
     }
 }
