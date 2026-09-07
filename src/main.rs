@@ -8,6 +8,7 @@ pub mod cli;
 pub mod error;
 pub mod persistance;
 pub mod r2;
+pub mod walk;
 
 fn main() -> ExitCode {
     let cli = Cli::parse();
