@@ -2,6 +2,9 @@ use serde::Deserialize;
 
 use crate::error::*;
 
+// sources:
+// https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjects.html#API_ListObjects_ResponseSyntax
+// https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html
 #[derive(Deserialize)]
 struct ListBucketResult {
     #[serde(default, rename = "Contents")]

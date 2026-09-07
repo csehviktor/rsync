@@ -4,7 +4,7 @@ use sha2::Digest;
 
 use crate::persistance::config::Credentials;
 
-// https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html
+// source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html
 const REGION: &str = "auto";
 const SERVICE: &str = "s3";
 
