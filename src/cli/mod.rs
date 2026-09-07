@@ -14,13 +14,23 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Command {
+    /// Initialize configuration and state files in the current directory
     #[command(alias = "init")]
     Initialize {
+        /// Optional bucket name to prefill in the config
         bucket: Option<String>,
     },
+
+    /// Compare local files against the bucket and show sync status
     #[command(alias = "ls")]
     List,
+
+    /// Download remote changes and delete locally pruned files
     Pull,
+
+    /// Upload modified and new local files and delete removed files from the bucket
     Push,
+
+    /// Verify credentials and test bucket reachability
     Validate,
 }
