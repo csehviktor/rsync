@@ -6,6 +6,7 @@ use reqwest::{
 use crate::error::*;
 use crate::persistance::config::Config;
 use crate::r2::sigv4;
+use crate::r2::xml;
 
 pub struct R2Client<'a> {
     config: &'a Config,
@@ -40,6 +41,36 @@ impl<'a> R2Client<'a> {
     pub fn put(&self, key: &str, body: Vec<u8>) -> RsyncResult<()> {
         self.request(Method::PUT, &self.object_path(key), &[], body)?;
         Ok(())
+    }
+
+    pub fn delete(&self, key: &str) -> RsyncResult<()> {
+        self.request(Method::DELETE, &self.object_path(key), &[], Vec::new())?;
+        Ok(())
+    }
+
+    pub fn list(&self) -> RsyncResult<Vec<String>> {
+        let mut keys = Vec::new();
+        let mut token: Option<String> = None;
+
+        loop {
+            let mut params: Vec<(&str, &str)> = vec![("list-type", "2")];
+
+            if let Some(current) = &token {
+                params.push(("continuation-token", current));
+            }
+
+            let body = self
+                .request(Method::GET, &self.bucket_path(), &params, Vec::new())?
+                .text()?;
+
+            let (mut page, next) = xml::parse_list(&body)?;
+            keys.append(&mut page);
+
+            match next {
+                Some(next) => token = Some(next),
+                None => return Ok(keys),
+            }
+        }
     }
 
     fn request(
@@ -81,10 +112,7 @@ impl<'a> R2Client<'a> {
         let status = response.status();
 
         if !status.is_success() {
-            return Err(Error::R2 {
-                status: status.as_u16(),
-                message: status.to_string(),
-            });
+            return Err(Error::R2(status.to_string()));
         }
 
         Ok(response)
