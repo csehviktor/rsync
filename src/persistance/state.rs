@@ -26,12 +26,20 @@ impl State {
             .map_err(|err| Error::Persistance(format!("cannot parse {STATE_FILE}: {err}")))
     }
 
+    pub fn keys(&self) -> impl Iterator<Item = &String> {
+        self.files.keys()
+    }
+
     pub fn is_pushed(&self, key: &str, hash: &str) -> bool {
         self.files.get(key).is_some_and(|value| value == hash)
     }
 
     pub fn push(&mut self, key: String, hash: String) {
         self.files.insert(key, hash);
+    }
+
+    pub fn remove(&mut self, key: &str) {
+        self.files.remove(key);
     }
 
     pub fn save(&self) -> RsyncResult<()> {
