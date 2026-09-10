@@ -25,10 +25,10 @@ pub enum Command {
     #[command(alias = "ls")]
     List,
 
-    /// Download remote changes and delete locally pruned files
+    /// Download remote changes
     Pull,
 
-    /// Upload modified and new local files and delete removed files from the bucket
+    /// Upload local changes
     Push,
 
     /// Verify credentials and test bucket reachability

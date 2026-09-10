@@ -34,8 +34,8 @@ cargo install --path .
 - ``rsync initialize/init``: initialize configuration and state files in the current directory
 - ``rsync validate``: verify credentials and test bucket reachability
 - ``rsync list/ls``: compare local files against the bucket and show sync status
-- ``rsync push``: upload modified and new local files and delete removed files from the bucket
-- ``rsync pull``: download remote changes and delete locally pruned files
+- ``rsync push``: upload local changes
+- ``rsync pull``: download remote changes
 
 > **note:** path under the exclude key, as well as files starting with a dot, including `.config.toml` and `.state.toml`, are automatically ignored during syncing
 
