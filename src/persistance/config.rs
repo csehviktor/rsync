@@ -22,6 +22,7 @@ pub struct Credentials {
 #[derive(Serialize, Deserialize)]
 pub struct Settings {
     pub bucket: String,
+    pub exclude: Vec<String>,
 }
 
 impl Config {
@@ -34,6 +35,7 @@ impl Config {
             },
             settings: Settings {
                 bucket: bucket.unwrap_or("<your-bucket>".into()),
+                exclude: vec![],
             },
         };
 
@@ -75,7 +77,18 @@ impl Config {
                 )));
             }
         }
+
         Ok(())
+    }
+
+    pub fn is_excluded(&self, key: &str) -> bool {
+        self.settings.exclude.iter().any(|entry| {
+            if entry.ends_with('/') {
+                key.starts_with(entry)
+            } else {
+                key == entry
+            }
+        })
     }
 }
 
@@ -94,6 +107,7 @@ mod tests {
 
             [settings]
             bucket = "my-bucket"
+            exclude = []
             "#,
         )
         .unwrap();
@@ -102,6 +116,7 @@ mod tests {
         assert_eq!(config.credentials.access_key_id, "key");
         assert_eq!(config.credentials.secret_access_key, "secret");
         assert_eq!(config.settings.bucket, "my-bucket");
+        assert_eq!(config.settings.exclude, Vec::<String>::new());
         assert!(config.validate().is_ok())
     }
 
@@ -111,5 +126,36 @@ mod tests {
         let config: Config = toml::from_str(&config_raw).unwrap();
 
         assert!(config.validate().is_err())
+    }
+
+    #[test]
+    fn exclusion_matching() {
+        let config: Config = toml::from_str(
+            r#"
+            [credentials]
+            account_id = "abc123"
+            access_key_id = "key"
+            secret_access_key = "secret"
+
+            [settings]
+            bucket = "my-bucket"
+            exclude = [
+                "randomdir/",
+                "abc.png",
+                "images/1.jpg"
+            ]
+            "#,
+        )
+        .unwrap();
+
+        assert!(config.is_excluded("randomdir/"));
+        assert!(config.is_excluded("randomdir/file.txt"));
+        assert!(config.is_excluded("randomdir/deep/file.txt"));
+        assert!(config.is_excluded("abc.png"));
+        assert!(config.is_excluded("images/1.jpg"));
+
+        assert!(!config.is_excluded("randomdir2/file.txt"));
+        assert!(!config.is_excluded("images/2.jpeg"));
+        assert!(!config.is_excluded("abc.png.bak"));
     }
 }

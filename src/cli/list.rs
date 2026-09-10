@@ -19,7 +19,7 @@ pub fn run() -> RsyncResult<()> {
     let config = Config::load()?;
     let client = R2Client::new(&config);
 
-    let local = collect_files(Path::new("."))?;
+    let local = collect_files(Path::new("."), |key| config.is_excluded(key))?;
     let remote = client.list()?;
 
     merge(&local, &remote);

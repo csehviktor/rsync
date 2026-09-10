@@ -18,7 +18,7 @@ pub fn run() -> RsyncResult<()> {
 
     let mut changes = 0;
 
-    for key in walk::collect_files(Path::new("."))? {
+    for key in walk::collect_files(Path::new("."), |key| config.is_excluded(key))? {
         let content = std::fs::read(&key)?;
         let hash = sigv4::hash(&content);
 

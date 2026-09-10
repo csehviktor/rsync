@@ -26,6 +26,7 @@ pub fn run() -> RsyncResult<()> {
 
     let pending: Vec<String> = remote
         .into_iter()
+        .filter(|key| !config.is_excluded(key))
         .filter(|key| !Path::new(key).exists())
         .collect();
 
