@@ -14,7 +14,7 @@ pub fn run() -> RsyncResult<()> {
     let client = R2Client::new(&config);
     let bucket = &config.settings.bucket;
 
-    println!("pushing changes from '{bucket}'...");
+    println!("pushing changes to '{bucket}'...");
 
     let mut changes = 0;
 
