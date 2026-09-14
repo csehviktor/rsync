@@ -41,7 +41,10 @@ fn visit(
 
 #[inline]
 fn key_for(root: &Path, path: &Path) -> String {
-    path.strip_prefix(root).unwrap().to_string_lossy().into()
+    path.strip_prefix(root)
+        .unwrap()
+        .to_string_lossy()
+        .replace("\\", "/")
 }
 
 #[cfg(test)]
