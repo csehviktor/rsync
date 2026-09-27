@@ -3,8 +3,7 @@ use std::path::Path;
 use serde::{Deserialize, Serialize};
 
 use crate::error::*;
-
-pub const CONFIG_FILE: &str = ".config.toml";
+use crate::persistance::CONFIG_FILE;
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {

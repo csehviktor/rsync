@@ -3,8 +3,7 @@ use std::{collections::BTreeMap, path::Path};
 use serde::{Deserialize, Serialize};
 
 use crate::error::*;
-
-pub const STATE_FILE: &str = ".state.toml";
+use crate::persistance::STATE_FILE;
 
 #[derive(Default, Serialize, Deserialize)]
 pub struct State {

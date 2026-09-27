@@ -3,6 +3,7 @@ use std::path::Path;
 use crate::error::*;
 use crate::persistance::config::*;
 use crate::persistance::state::*;
+use crate::persistance::{CONFIG_FILE, STATE_FILE};
 
 pub fn run(bucket: Option<String>) -> RsyncResult<()> {
     if Path::new(CONFIG_FILE).exists() || Path::new(STATE_FILE).exists() {
